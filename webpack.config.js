@@ -5,13 +5,13 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require('terser-webpack-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 //lossless//  npm uninstall imagemin-gifsicle imagemin-jpegtran imagemin-optipng imagemin-svgo --save-dev
-//lossly // npm install imagemin-gifsicle imagemin-mozjpeg imagemin-pngquant imagemin-svgo --save-dev
+//lossly// npm install imagemin-gifsicle imagemin-mozjpeg imagemin-pngquant imagemin-svgo --save-dev
 
 const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-  mode: 'development',
-  devtool: 'inline-source-map',
+  mode: devMode ? 'development' : 'production',
+  devtool: devMode ? 'inline-source-map' : false,
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -19,7 +19,7 @@ module.exports = {
     assetModuleFilename: 'images/[hash][ext][query]'  
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx',]  
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.scss']  
   },
   module: {
     rules: [
@@ -38,14 +38,14 @@ module.exports = {
         }
       },
       {
-        test: /\.module\.s?css$/,
+        test: /\.s?css$/,
         use: [
           devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
               modules: {
-                mode: 'local',
+                auto: true, 
                 localIdentName: '[name]__[local]___[hash:base64:5]',
                 exportLocalsConvention: 'camelCaseOnly'
               }

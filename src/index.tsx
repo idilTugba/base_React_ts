@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 
 import Header from "./components/header/Header";
 import MenuCardSlider from "./components/sliders/menu";
+import "./asset/styles/app.scss";
 
 function App() {
   return (
